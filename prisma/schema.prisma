@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum JobStatus {
+  viewed
+  applied
+  interviewed
+  rejected
+  cancelled
+}
+
+model Job {
+  id             String    @id @default(uuid())
+  title          String
+  company        String
+  rawDescription String
+  salary         String?
+  location       String?
+  remote         Boolean   @default(false)
+
+  matchScore     Int
+  matchReasons   String    // JSON array stored as string
+  concerns       String    // JSON array stored as string
+
+  status         JobStatus @default(viewed)
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
