@@ -30,6 +30,22 @@ model Job {
 
   status         JobStatus @default(viewed)
 
+  contacts       Contact[]
+
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+}
+
+model Contact {
+  id          String   @id @default(uuid())
+  name        String
+  role        String?
+  linkedIn    String?
+  reachedOut  Boolean  @default(false)
+
+  job         Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId       String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
