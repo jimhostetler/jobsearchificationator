@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Job } from "@/lib/types";
 import { StatusSelect } from "./StatusBadge";
 import { JobStatus } from "@prisma/client";
@@ -8,6 +9,7 @@ interface ScoreDisplayProps {
   job: Job;
   onStatusChange: (status: JobStatus) => void;
   onDismiss: () => void;
+  onJobUpdate?: (job: Job) => void;
 }
 
 function getScoreColor(score: number): string {
@@ -22,7 +24,33 @@ function getScoreBg(score: number): string {
   return "bg-red-50 border-red-200";
 }
 
-export function ScoreDisplay({ job, onStatusChange, onDismiss }: ScoreDisplayProps) {
+export function ScoreDisplay({ job, onStatusChange, onDismiss, onJobUpdate }: ScoreDisplayProps) {
+  const [rescoring, setRescoring] = useState(false);
+  const [rescoreError, setRescoreError] = useState<string | null>(null);
+
+  const handleRescore = async () => {
+    setRescoring(true);
+    setRescoreError(null);
+
+    try {
+      const response = await fetch(`/api/jobs/${job.id}/rescore`, {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        const updatedJob = await response.json();
+        onJobUpdate?.(updatedJob);
+      } else {
+        const data = await response.json();
+        setRescoreError(data.error || "Re-evaluation failed");
+      }
+    } catch {
+      setRescoreError("Re-evaluation failed");
+    } finally {
+      setRescoring(false);
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg border overflow-hidden">
       {/* Header with score */}
@@ -37,8 +65,24 @@ export function ScoreDisplay({ job, onStatusChange, onDismiss }: ScoreDisplayPro
               {job.matchScore}
             </div>
             <div className="text-sm text-gray-500">Match Score</div>
+            <button
+              onClick={handleRescore}
+              disabled={rescoring}
+              className="mt-1 text-xs text-blue-600 hover:text-blue-700 disabled:opacity-50 underline"
+            >
+              {rescoring ? "Re-evaluating..." : "Re-evaluate"}
+            </button>
           </div>
         </div>
+        {rescoreError && (
+          <p className="mt-2 text-sm text-red-600">{rescoreError}</p>
+        )}
+        {rescoring && (
+          <div className="mt-3 flex items-center gap-2 text-sm text-gray-500">
+            <div className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-blue-600"></div>
+            Scoring against current profile...
+          </div>
+        )}
       </div>
 
       {/* Details */}

@@ -48,12 +48,20 @@ export default function Home() {
           <h1 className="text-xl font-bold text-gray-900">
             Job Search Tracker
           </h1>
-          <a
-            href="/jobs"
-            className="text-sm font-medium text-blue-600 hover:text-blue-700"
-          >
-            View All Jobs
-          </a>
+          <div className="flex items-center gap-4">
+            <a
+              href="/profile"
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              Edit Profile
+            </a>
+            <a
+              href="/jobs"
+              className="text-sm font-medium text-blue-600 hover:text-blue-700"
+            >
+              View All Jobs
+            </a>
+          </div>
         </div>
       </header>
 
@@ -64,6 +72,7 @@ export default function Home() {
             job={currentJob}
             onStatusChange={handleStatusChange}
             onDismiss={handleDismiss}
+            onJobUpdate={setCurrentJob}
           />
         ) : (
           <div className="bg-white rounded-lg shadow p-6">

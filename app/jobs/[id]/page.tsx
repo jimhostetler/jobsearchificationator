@@ -24,6 +24,8 @@ export default function JobDetailPage() {
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
+  const [rescoring, setRescoring] = useState(false);
+  const [rescoreError, setRescoreError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -61,6 +63,30 @@ export default function JobDetailPage() {
       }
     } catch (error) {
       console.error("Failed to update status:", error);
+    }
+  };
+
+  const handleRescore = async () => {
+    if (!job) return;
+    setRescoring(true);
+    setRescoreError(null);
+
+    try {
+      const response = await fetch(`/api/jobs/${job.id}/rescore`, {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        const updatedJob = await response.json();
+        setJob(updatedJob);
+      } else {
+        const data = await response.json();
+        setRescoreError(data.error || "Re-evaluation failed");
+      }
+    } catch {
+      setRescoreError("Re-evaluation failed");
+    } finally {
+      setRescoring(false);
     }
   };
 
@@ -147,8 +173,24 @@ export default function JobDetailPage() {
                   {job.matchScore}
                 </div>
                 <div className="text-sm text-gray-500">Match Score</div>
+                <button
+                  onClick={handleRescore}
+                  disabled={rescoring}
+                  className="mt-2 text-xs text-blue-600 hover:text-blue-700 disabled:opacity-50 underline"
+                >
+                  {rescoring ? "Re-evaluating..." : "Re-evaluate"}
+                </button>
               </div>
             </div>
+            {rescoreError && (
+              <p className="mt-2 text-sm text-red-600">{rescoreError}</p>
+            )}
+            {rescoring && (
+              <div className="mt-3 flex items-center gap-2 text-sm text-gray-500">
+                <div className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-blue-600"></div>
+                Scoring against current profile...
+              </div>
+            )}
           </div>
 
           {/* Details */}
@@ -177,6 +219,18 @@ export default function JobDetailPage() {
                 </div>
               </div>
             </div>
+
+            {/* Mission alignment */}
+            {job.missionAlignment && (
+              <div>
+                <h3 className="text-sm font-medium text-gray-700 mb-2">
+                  Mission Alignment
+                </h3>
+                <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
+                  {job.missionAlignment}
+                </p>
+              </div>
+            )}
 
             {/* Match reasons */}
             {job.matchReasons.length > 0 && (
