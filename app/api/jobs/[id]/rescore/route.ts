@@ -19,6 +19,11 @@ export async function POST(
     const updatedJob = await prisma.job.update({
       where: { id },
       data: {
+        title: scoreResult.title,
+        company: scoreResult.company,
+        salary: scoreResult.salary,
+        location: scoreResult.location,
+        remote: scoreResult.remote,
         matchScore: scoreResult.matchScore,
         matchReasons: JSON.stringify(scoreResult.matchReasons),
         concerns: JSON.stringify(scoreResult.concerns),

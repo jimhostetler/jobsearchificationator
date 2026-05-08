@@ -80,13 +80,14 @@ export default function JobsPage() {
   const activeJobs = isShowingAll ? jobs.filter((j) => !DEAD_STATUSES.has(j.status)) : jobs;
   const deadJobs = isShowingAll ? jobs.filter((j) => DEAD_STATUSES.has(j.status)) : [];
 
+  const scoredActiveJobs = activeJobs.filter((j) => j.matchScore !== null);
   const stats = {
     total: jobs.filter((j) => !DEAD_STATUSES.has(j.status)).length,
     applied: jobs.filter((j) => j.status === "applied").length,
     interviewed: jobs.filter((j) => j.status === "interviewed").length,
     avgScore:
-      activeJobs.length > 0
-        ? Math.round(activeJobs.reduce((sum, j) => sum + j.matchScore, 0) / activeJobs.length)
+      scoredActiveJobs.length > 0
+        ? Math.round(scoredActiveJobs.reduce((sum, j) => sum + (j.matchScore as number), 0) / scoredActiveJobs.length)
         : 0,
   };
 

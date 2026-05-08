@@ -18,8 +18,8 @@ export async function GET(
 
     return NextResponse.json({
       ...job,
-      matchReasons: JSON.parse(job.matchReasons),
-      concerns: JSON.parse(job.concerns),
+      matchReasons: job.matchReasons ? JSON.parse(job.matchReasons) : null,
+      concerns: job.concerns ? JSON.parse(job.concerns) : null,
     });
   } catch (error) {
     console.error("Error fetching job:", error);
@@ -54,8 +54,8 @@ export async function PATCH(
 
     return NextResponse.json({
       ...job,
-      matchReasons: JSON.parse(job.matchReasons),
-      concerns: JSON.parse(job.concerns),
+      matchReasons: job.matchReasons ? JSON.parse(job.matchReasons) : null,
+      concerns: job.concerns ? JSON.parse(job.concerns) : null,
     });
   } catch (error) {
     console.error("Error updating job:", error);

@@ -9,7 +9,8 @@ interface JobCardProps {
   onStatusChange: (id: string, status: JobStatus) => void;
 }
 
-function getScoreColor(score: number): string {
+function getScoreColor(score: number | null): string {
+  if (score === null) return "text-gray-400 bg-gray-100";
   if (score >= 70) return "text-green-600 bg-green-50";
   if (score >= 40) return "text-yellow-600 bg-yellow-50";
   return "text-red-600 bg-red-50";
@@ -39,8 +40,8 @@ export function JobCard({ job, onStatusChange }: JobCardProps) {
               </span>
             )}
           </div>
-          <p className="text-sm text-gray-600">{job.company}</p>
-          <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+          <p className="text-sm text-gray-700">{job.company}</p>
+          <div className="flex items-center gap-4 mt-2 text-xs text-gray-600">
             {job.location && <span>{job.location}</span>}
             {job.salary && <span>{job.salary}</span>}
             <span>{formattedDate}</span>
@@ -54,7 +55,7 @@ export function JobCard({ job, onStatusChange }: JobCardProps) {
               job.matchScore
             )}`}
           >
-            {job.matchScore}
+            {job.matchScore ?? "?"}
           </div>
           <div className="w-32">
             <StatusSelect
@@ -66,23 +67,35 @@ export function JobCard({ job, onStatusChange }: JobCardProps) {
       </div>
 
       {/* Match highlights */}
-      {job.matchReasons.length > 0 && (
+      {job.matchReasons && job.matchReasons.length > 0 && (
         <div className="mt-3 pt-3 border-t">
           <div className="flex flex-wrap gap-2">
             {job.matchReasons.slice(0, 2).map((reason, i) => (
               <span
                 key={i}
-                className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-gray-100 text-gray-700"
+                className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-gray-100 text-gray-800"
               >
                 {reason.length > 50 ? reason.slice(0, 50) + "..." : reason}
               </span>
             ))}
             {job.matchReasons.length > 2 && (
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-600">
                 +{job.matchReasons.length - 2} more
               </span>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Unscored indicator */}
+      {job.matchScore === null && (
+        <div className="mt-3 pt-3 border-t">
+          <a
+            href={`/jobs/${job.id}`}
+            className="text-xs text-blue-600 hover:text-blue-700"
+          >
+            Not yet evaluated — click to score
+          </a>
         </div>
       )}
     </div>

@@ -24,9 +24,9 @@ model Job {
   location       String?
   remote         Boolean   @default(false)
 
-  matchScore     Int
-  matchReasons   String    // JSON array stored as string
-  concerns       String    // JSON array stored as string
+  matchScore     Int?
+  matchReasons   String?   // JSON array stored as string
+  concerns       String?   // JSON array stored as string
 
   status         JobStatus @default(viewed)
 

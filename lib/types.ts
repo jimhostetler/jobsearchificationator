@@ -8,9 +8,9 @@ export interface Job {
   salary: string | null;
   location: string | null;
   remote: boolean;
-  matchScore: number;
-  matchReasons: string[];
-  concerns: string[];
+  matchScore: number | null;
+  matchReasons: string[] | null;
+  concerns: string[] | null;
   status: JobStatus;
   createdAt: string;
   updatedAt: string;

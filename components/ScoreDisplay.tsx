@@ -12,13 +12,15 @@ interface ScoreDisplayProps {
   onJobUpdate?: (job: Job) => void;
 }
 
-function getScoreColor(score: number): string {
+function getScoreColor(score: number | null): string {
+  if (score === null) return "text-gray-400";
   if (score >= 70) return "text-green-600";
   if (score >= 40) return "text-yellow-600";
   return "text-red-600";
 }
 
-function getScoreBg(score: number): string {
+function getScoreBg(score: number | null): string {
+  if (score === null) return "bg-gray-50 border-gray-200";
   if (score >= 70) return "bg-green-50 border-green-200";
   if (score >= 40) return "bg-yellow-50 border-yellow-200";
   return "bg-red-50 border-red-200";
@@ -125,7 +127,7 @@ export function ScoreDisplay({ job, onStatusChange, onDismiss, onJobUpdate }: Sc
         )}
 
         {/* Match reasons */}
-        {job.matchReasons.length > 0 && (
+        {job.matchReasons && job.matchReasons.length > 0 && (
           <div>
             <h3 className="text-sm font-medium text-green-700 mb-2">
               Why This Fits
@@ -152,7 +154,7 @@ export function ScoreDisplay({ job, onStatusChange, onDismiss, onJobUpdate }: Sc
         )}
 
         {/* Concerns */}
-        {job.concerns.length > 0 && (
+        {job.concerns && job.concerns.length > 0 && (
           <div>
             <h3 className="text-sm font-medium text-red-700 mb-2">Concerns</h3>
             <ul className="space-y-1">

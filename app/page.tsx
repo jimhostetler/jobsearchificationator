@@ -1,17 +1,23 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { JobForm } from "@/components/JobForm";
 import { ScoreDisplay } from "@/components/ScoreDisplay";
 import { Job } from "@/lib/types";
 import { JobStatus } from "@prisma/client";
 
 export default function Home() {
+  const router = useRouter();
   const [currentJob, setCurrentJob] = useState<Job | null>(null);
   const [updating, setUpdating] = useState(false);
 
   const handleJobCreated = (job: Job) => {
-    setCurrentJob(job);
+    if (job.matchScore === null) {
+      router.push(`/jobs/${job.id}`);
+    } else {
+      setCurrentJob(job);
+    }
   };
 
   const handleStatusChange = async (status: JobStatus) => {

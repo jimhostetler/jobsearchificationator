@@ -4,7 +4,7 @@ import { scoreJobDescription } from "@/lib/claude";
 
 export async function POST(request: NextRequest) {
   try {
-    const { rawDescription } = await request.json();
+    const { rawDescription, skipScoring, title: manualTitle, company: manualCompany } = await request.json();
 
     if (!rawDescription || typeof rawDescription !== "string") {
       return NextResponse.json(
@@ -13,10 +13,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Score the job using Claude
+    if (skipScoring) {
+      const job = await prisma.job.create({
+        data: {
+          title: manualTitle?.trim() || "Untitled Job",
+          company: manualCompany?.trim() || "Unknown",
+          rawDescription,
+          matchScore: null,
+          matchReasons: null,
+          concerns: null,
+          status: "viewed",
+        },
+      });
+
+      return NextResponse.json({
+        ...job,
+        matchReasons: null,
+        concerns: null,
+      });
+    }
+
     const scoreResult = await scoreJobDescription(rawDescription);
 
-    // Create the job in the database
     const job = await prisma.job.create({
       data: {
         title: scoreResult.title,
@@ -41,7 +59,6 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error("Error creating job:", error);
 
-    // Check for Anthropic API errors
     if (error?.error?.error?.message) {
       const apiMessage = error.error.error.message;
 
@@ -52,7 +69,6 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Return other API errors directly
       return NextResponse.json(
         { error: `API Error: ${apiMessage}` },
         { status: error.status || 500 }
@@ -82,11 +98,10 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    // Parse JSON fields
     const parsedJobs = jobs.map((job) => ({
       ...job,
-      matchReasons: JSON.parse(job.matchReasons),
-      concerns: JSON.parse(job.concerns),
+      matchReasons: job.matchReasons ? JSON.parse(job.matchReasons) : null,
+      concerns: job.concerns ? JSON.parse(job.concerns) : null,
     }));
 
     return NextResponse.json(parsedJobs);
