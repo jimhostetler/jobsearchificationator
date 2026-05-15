@@ -15,6 +15,13 @@ enum JobStatus {
   cancelled
 }
 
+enum CandidateStatus {
+  new
+  reviewed
+  promoted
+  dismissed
+}
+
 model Job {
   id             String    @id @default(uuid())
   title          String
@@ -27,6 +34,7 @@ model Job {
   matchScore     Int?
   matchReasons   String?   // JSON array stored as string
   concerns       String?   // JSON array stored as string
+  resumeTweaks   String?   // JSON array stored as string
 
   status         JobStatus @default(viewed)
 
@@ -34,6 +42,38 @@ model Job {
 
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+}
+
+// Candidates are jobs discovered by the daily search agent.
+// They are staged here for review before being promoted into Job.
+model Candidate {
+  id             String          @id @default(uuid())
+  title          String
+  company        String
+  url            String?         @unique
+  rawDescription String?
+  salary         String?
+  location       String?
+  remote         Boolean         @default(false)
+
+  source         String?         // e.g., "linkedin", "ashby", "lever", "company-careers"
+  searchQuery    String?         // the query that found it
+
+  matchScore     Int?
+  matchReasons   String?         // JSON array stored as string
+  concerns       String?         // JSON array stored as string
+
+  status         CandidateStatus @default(new)
+
+  discoveredAt   DateTime        @default(now())
+  reviewedAt     DateTime?
+  promotedJobId  String?         // jobs.id if promoted
+
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([status, discoveredAt])
+  @@index([company])
 }
 
 model Contact {

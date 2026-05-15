@@ -1,0 +1,1 @@
+2026-05-15T03:36:18Z | scanned=~40 results across 8 queries | survived_filters=5 | inserted=5 | deduped=0 | notes: Splice/vidIQ/LTK/Affirm/Propel/Grove/Circle roles all expired or not active; GoodLeap Lever pages JS-rendered (curl-style fetch empty); DB direct write blocked by mount, used tmp-copy workaround

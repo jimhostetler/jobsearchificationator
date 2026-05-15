@@ -18,7 +18,7 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
-input, select, textarea, button {
+input, select, textarea {
   color: inherit;
   font-family: inherit;
 }

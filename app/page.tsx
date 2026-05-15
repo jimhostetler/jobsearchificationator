@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { JobForm } from "@/components/JobForm";
 import { ScoreDisplay } from "@/components/ScoreDisplay";
+import { AppHeader } from "@/components/AppHeader";
 import { Job } from "@/lib/types";
 import { JobStatus } from "@prisma/client";
 
@@ -48,28 +49,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-900">
-            Job Search Tracker
-          </h1>
-          <div className="flex items-center gap-4">
-            <a
-              href="/profile"
-              className="text-sm font-medium text-gray-600 hover:text-gray-900"
-            >
-              Edit Profile
-            </a>
-            <a
-              href="/jobs"
-              className="text-sm font-medium text-blue-600 hover:text-blue-700"
-            >
-              View All Jobs
-            </a>
-          </div>
-        </div>
-      </header>
+      <AppHeader title="Add Job" />
 
       {/* Main content */}
       <main className="max-w-4xl mx-auto px-4 py-8">

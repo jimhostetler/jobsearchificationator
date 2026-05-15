@@ -20,6 +20,7 @@ export async function GET(
       ...job,
       matchReasons: job.matchReasons ? JSON.parse(job.matchReasons) : null,
       concerns: job.concerns ? JSON.parse(job.concerns) : null,
+      resumeTweaks: job.resumeTweaks ? JSON.parse(job.resumeTweaks) : null,
     });
   } catch (error) {
     console.error("Error fetching job:", error);

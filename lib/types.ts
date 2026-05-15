@@ -1,5 +1,11 @@
 import { JobStatus } from "@prisma/client";
 
+export interface ResumeTweak {
+  section: string;
+  suggestion: string;
+  rationale: string;
+}
+
 export interface Job {
   id: string;
   title: string;
@@ -11,6 +17,7 @@ export interface Job {
   matchScore: number | null;
   matchReasons: string[] | null;
   concerns: string[] | null;
+  resumeTweaks: ResumeTweak[] | null;
   status: JobStatus;
   createdAt: string;
   updatedAt: string;

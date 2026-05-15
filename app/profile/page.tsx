@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AppHeader } from "@/components/AppHeader";
 
 export default function ProfilePage() {
   const [content, setContent] = useState("");
@@ -43,22 +44,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <a href="/" className="text-sm font-medium text-gray-600 hover:text-gray-900">
-              &larr; Home
-            </a>
-            <h1 className="text-xl font-bold text-gray-900">Profile (CLAUDE.md)</h1>
-          </div>
-          <a
-            href="/jobs"
-            className="text-sm font-medium text-blue-600 hover:text-blue-700"
-          >
-            View All Jobs
-          </a>
-        </div>
-      </header>
+      <AppHeader title="Profile" />
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow p-6">

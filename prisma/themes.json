@@ -1,0 +1,139 @@
+{
+  "generatedAt": "2026-05-15T03:16:34.072Z",
+  "candidateName": "Jim Hostetler",
+  "hardFilters": {
+    "excludeIndustries": [
+      "health insurance",
+      "traditional banking",
+      "wealth management",
+      "financial services"
+    ],
+    "excludeCompanies": [
+      "Discord",
+      "Duolingo",
+      "AirBnB",
+      "Thrivent"
+    ],
+    "excludeKeywords": [
+      "hybrid",
+      "on-site",
+      "SF anchor",
+      "San Francisco required",
+      "relocation required",
+      "high-documentation culture",
+      "async-first"
+    ],
+    "requireRemote": true,
+    "excludeLocations": [
+      "San Francisco required",
+      "on-site only",
+      "hybrid required"
+    ]
+  },
+  "targetTitles": [
+    "Director of Product",
+    "Head of Product",
+    "VP of Product",
+    "Director Product Management"
+  ],
+  "targetIndustries": [
+    "creator economy",
+    "community platforms",
+    "climate tech",
+    "clean energy",
+    "consumer fintech",
+    "solar financing",
+    "educational technology"
+  ],
+  "targetCompanies": [
+    {
+      "name": "Reddit",
+      "tier": 1,
+      "rationale": "Community platform, daily user, multiple prior applications"
+    },
+    {
+      "name": "GoodLeap",
+      "tier": 1,
+      "rationale": "Solar/sustainable home financing, $30B+ facilitated, 1M+ homeowners"
+    },
+    {
+      "name": "Kickstarter",
+      "tier": 1,
+      "rationale": "Creator crowdfunding, Jim is a contributor and believes in the mission"
+    },
+    {
+      "name": "Patreon",
+      "tier": 1,
+      "rationale": "Creator monetization and community"
+    },
+    {
+      "name": "Figma",
+      "tier": 2,
+      "rationale": "Democratizing design and collaboration"
+    },
+    {
+      "name": "Substack",
+      "tier": 2,
+      "rationale": "Creator economy, writing culture fits Jim"
+    },
+    {
+      "name": "Etsy",
+      "tier": 2,
+      "rationale": "Independent maker marketplace"
+    },
+    {
+      "name": "Octopus Energy",
+      "tier": 2,
+      "rationale": "Green energy tech at scale"
+    },
+    {
+      "name": "Khan Academy",
+      "tier": 2,
+      "rationale": "Free world-class education, AI investment"
+    }
+  ],
+  "positiveThemes": [
+    "people management and team development",
+    "cross-functional leadership without direct authority",
+    "consumer products with genuine user value",
+    "mission-driven platforms",
+    "product org design",
+    "director-level responsibilities",
+    "remote-first culture",
+    "creator economy focus"
+  ],
+  "negativeThemes": [
+    "B2B financial infrastructure",
+    "async-heavy documentation cultures",
+    "growth funnel optimization focus",
+    "roles requiring relocation",
+    "senior PM level positions below current director role",
+    "traditional banking and financial services",
+    "high-process enterprise environments"
+  ],
+  "searchQueries": [
+    "Director of Product remote creator economy 2024",
+    "Head of Product remote climate tech hiring",
+    "VP Product remote consumer platform",
+    "Director Product Management remote community platform",
+    "Head of Product remote clean energy fintech",
+    "VP Product remote creator tools platform",
+    "Director of Product remote educational technology",
+    "Head of Product Management remote solar fintech",
+    "Director Product remote consumer fintech platform",
+    "VP Product Management remote mission driven platform"
+  ],
+  "knownCompanies": [
+    "Figma",
+    "Toast",
+    "Marqeta",
+    "Tremendous",
+    "Thrivent",
+    "Mighty Networks",
+    "Stan",
+    "ClassPass",
+    "Kickstarter",
+    "LEGO Digital Play"
+  ],
+  "narrative": "Jim is a Director-level product leader seeking remote leadership roles at mission-driven consumer platforms in creator economy, climate tech, or consumer fintech. He wants roles that combine product leadership with team building and org design, avoiding B2B infrastructure, traditional finance, and growth optimization roles. He needs authentic mission alignment - something he can advocate for genuinely, not perform enthusiasm about."
+}

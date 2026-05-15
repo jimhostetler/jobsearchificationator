@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Job } from "@/lib/types";
 import { JobCard } from "@/components/JobCard";
+import { AppHeader } from "@/components/AppHeader";
 import { JobStatus } from "@prisma/client";
 
 const statusFilters: { value: string; label: string }[] = [
@@ -93,26 +94,7 @@ export default function JobsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-900">All Jobs</h1>
-          <div className="flex items-center gap-3">
-            <a
-              href="/profile"
-              className="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50"
-            >
-              Edit Profile
-            </a>
-            <a
-              href="/"
-              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
-            >
-              Score New Job
-            </a>
-          </div>
-        </div>
-      </header>
+      <AppHeader title="All Jobs" />
 
       <main className="max-w-6xl mx-auto px-4 py-8">
         {/* Stats */}

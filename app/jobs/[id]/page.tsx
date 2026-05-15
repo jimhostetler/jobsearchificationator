@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Job } from "@/lib/types";
+import { Job, ResumeTweak } from "@/lib/types";
 import { StatusSelect } from "@/components/StatusBadge";
+import { AppHeader } from "@/components/AppHeader";
 import { JobStatus } from "@prisma/client";
 
 function getScoreColor(score: number | null): string {
@@ -28,6 +29,8 @@ export default function JobDetailPage() {
   const [deleting, setDeleting] = useState(false);
   const [rescoring, setRescoring] = useState(false);
   const [rescoreError, setRescoreError] = useState<string | null>(null);
+  const [generatingTweaks, setGeneratingTweaks] = useState(false);
+  const [tweaksError, setTweaksError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -92,6 +95,30 @@ export default function JobDetailPage() {
     }
   };
 
+  const handleGenerateTweaks = async () => {
+    if (!job) return;
+    setGeneratingTweaks(true);
+    setTweaksError(null);
+
+    try {
+      const response = await fetch(`/api/jobs/${job.id}/resume-tweaks`, {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        const updatedJob = await response.json();
+        setJob(updatedJob);
+      } else {
+        const data = await response.json();
+        setTweaksError(data.error || "Failed to generate tweaks");
+      }
+    } catch {
+      setTweaksError("Failed to generate tweaks");
+    } finally {
+      setGeneratingTweaks(false);
+    }
+  };
+
   const handleDelete = async () => {
     if (!job || !confirm("Are you sure you want to delete this job?")) return;
 
@@ -139,15 +166,9 @@ export default function JobDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <a
-            href="/jobs"
-            className="text-sm font-medium text-gray-700 hover:text-gray-900"
-          >
-            &larr; Back to Jobs
-          </a>
+      <AppHeader
+        title={`${job.title} — ${job.company}`}
+        actions={
           <button
             onClick={handleDelete}
             disabled={deleting}
@@ -155,8 +176,8 @@ export default function JobDetailPage() {
           >
             {deleting ? "Deleting..." : "Delete Job"}
           </button>
-        </div>
-      </header>
+        }
+      />
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-lg border overflow-hidden">
@@ -315,6 +336,49 @@ export default function JobDetailPage() {
                 </ul>
               </div>
             )}
+
+            {/* Resume Tweaks */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-medium text-blue-800">
+                  Resume Tweaks
+                </h3>
+                <button
+                  onClick={handleGenerateTweaks}
+                  disabled={generatingTweaks}
+                  className="text-xs px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 flex items-center gap-1.5"
+                >
+                  {generatingTweaks ? (
+                    <>
+                      <span className="inline-block animate-spin rounded-full h-3 w-3 border-2 border-white border-t-transparent"></span>
+                      Generating...
+                    </>
+                  ) : job.resumeTweaks && job.resumeTweaks.length > 0 ? (
+                    "Regenerate"
+                  ) : (
+                    "Generate Tweaks"
+                  )}
+                </button>
+              </div>
+              {tweaksError && (
+                <p className="text-sm text-red-600 mb-2">{tweaksError}</p>
+              )}
+              {job.resumeTweaks && job.resumeTweaks.length > 0 ? (
+                <ul className="space-y-3">
+                  {job.resumeTweaks.map((tweak: ResumeTweak, i: number) => (
+                    <li key={i} className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-sm">
+                      <div className="font-medium text-blue-900 mb-1">{tweak.section}</div>
+                      <div className="text-gray-800 mb-1">{tweak.suggestion}</div>
+                      <div className="text-gray-500 text-xs italic">{tweak.rationale}</div>
+                    </li>
+                  ))}
+                </ul>
+              ) : !generatingTweaks && (
+                <p className="text-sm text-gray-500">
+                  Click &ldquo;Generate Tweaks&rdquo; to get specific recommendations for tailoring your master resume to this role.
+                </p>
+              )}
+            </div>
 
             {/* Raw description */}
             <div>
