@@ -114,8 +114,7 @@ export default function CandidatesPage() {
           <div className="text-center py-12 text-gray-500">Loading…</div>
         ) : candidates.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-lg shadow text-gray-500">
-            No candidates with status &quot;{filter || "any"}&quot;. The daily
-            agent runs each morning — check back tomorrow, or extract themes and
+            No candidates with status &quot;{filter || "any"}&quot;. <br/>The agent runs each Monday and Thursday morning — check back then, or extract themes and
             wait for the next run.
           </div>
         ) : (
