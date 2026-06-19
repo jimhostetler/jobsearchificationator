@@ -1,0 +1,11 @@
+2026-05-20T05:05:55Z | searched=7 | fetched=8 | inserted=3 | deduped=1
+2026-05-20T05:38:14Z | searched=9 | fetched=8 | inserted=1 | deduped=2
+2026-05-21T12:57:07Z | searched=9 | fetched=8 | inserted=2 | deduped=3
+2026-05-26T07:18:36.841621+00:00 | searched=9 | fetched=8 | inserted=0 | deduped=0
+2026-05-29T02:56:53Z | searched=9 | fetched=8 | inserted=2 | deduped=1
+2026-06-01T16:17:29.033632+00:00 | searched=9 | fetched=8 | inserted=5 | deduped=4
+2026-06-02T02:41:24.123170+00:00 | searched=9 | fetched=4 | verified=0 | inserted=0 | deduped=0
+2026-06-06T04:12:04Z | searched=9 | fetched=7 | verified=1 | inserted=1 | deduped=0
+2026-06-06T04:25:08.372160+00:00 | searched=9 | fetched=13 | verified=2 | inserted=0 | deduped=2
+2026-06-09T03:47:39.106899+00:00 | searched=12 | fetched=10 | verified=4 | inserted=0 | deduped=3
+2026-06-19T18:39:06Z | searched=12 | fetched=12 | verified=1 | inserted=3 | deduped=0 | DB_RECOVERED: dev.db was malformed; restored from Jun-9 backup + 3 new inserts (GoodLeap Senior PM B2B, GoodLeap Staff PM B2B, Reddit Senior PM Brand Ads & Safety — all unverified JS-rendered)

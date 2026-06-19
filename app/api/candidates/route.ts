@@ -31,12 +31,25 @@ interface CandidateRow {
   updatedAt: string;
 }
 
+function parseJsonArray(raw: string | null): string[] | null {
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed;
+    // Stored as a plain string (e.g. bullet-point text) — split into lines
+    return String(parsed).split(/\n|•/).map(s => s.trim()).filter(Boolean);
+  } catch {
+    // Not valid JSON at all — split the raw string into lines
+    return raw.split(/\n|•/).map(s => s.trim()).filter(Boolean);
+  }
+}
+
 function parseCandidate(row: CandidateRow) {
   return {
     ...row,
     remote: row.remote === 1,
-    matchReasons: row.matchReasons ? JSON.parse(row.matchReasons) : null,
-    concerns: row.concerns ? JSON.parse(row.concerns) : null,
+    matchReasons: parseJsonArray(row.matchReasons),
+    concerns: parseJsonArray(row.concerns),
   };
 }
 

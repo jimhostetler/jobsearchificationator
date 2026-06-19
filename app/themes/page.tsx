@@ -100,13 +100,10 @@ export default function ThemesPage() {
           <div className="text-center py-12 text-gray-500">Loading…</div>
         ) : !themes ? (
           <div className="text-center py-12 bg-white rounded-lg shadow text-gray-600">
-            <p className="mb-4">
+            <p className="text-sm text-gray-600">
               No themes have been extracted yet. Click <strong>Re-extract themes</strong> above
               to have Claude read your <code>CLAUDE.md</code> and applied-jobs history
-              and produce a theme file.
-            </p>
-            <p className="text-sm text-gray-500">
-              The daily search agent will read these themes each morning.
+              and produce a theme summary.
             </p>
           </div>
         ) : (

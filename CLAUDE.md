@@ -43,26 +43,23 @@ Jim wants one or both of the following in a role:
 ### Tier 1 — Active pursuit
 | Company | Why | Current Status |
 |---|---|---|
-| Reddit | Community platform, daily user, multiple prior applications | Direct outreach is higher-leverage than more applications |
-| GoodLeap | Solar/sustainable home financing, $30B+ facilitated, 1M+ homeowners | Active remote PM roles open (Principal PM Payments, PM Virtual Power Plant) |
+| GoodLeap | Solar/sustainable home financing, $30B+ facilitated | Active remote PM roles open (Principal PM Payments, PM Virtual Power Plant) |
 | Kickstarter | Creator crowdfunding, Jim is a contributor and believes in the mission | No PM role posted; direct outreach + POV memo is the play |
 | Patreon | Creator monetization and community | Check jobs.ashbyhq.com/patreon; roles open and close quickly |
+| Reddit | Community platform, daily user, multiple prior applications | Direct outreach is higher-leverage than more applications |
 
 ### Tier 2 — Monitor and outreach
 | Company | Why | Notes |
 |---|---|---|
-| Figma | Democratizing design and collaboration | No Director of PM currently posted; watch |
-| Substack | Creator economy, writing culture fits Jim | Small team; direct outreach play |
 | Etsy | Independent maker marketplace | In transition; verify current hiring state |
-| Octopus Energy / Kraken | Green energy tech at scale | UK HQ but US remote roles exist |
+| Figma | Democratizing design and collaboration | No Director of PM currently posted; watch |
 | Khan Academy | Free world-class education, AI investment | PM roles rare but meaningful |
+| Octopus Energy | Green energy tech at scale | UK HQ but US remote roles exist |
+| Substack | Creator economy, writing culture fits Jim | Small team; direct outreach play |
 
 ### Off the list
-- **Discord** — requires San Francisco presence
-- **Duolingo** — confirmed on-site
 - **AirBnB** — previously rejected
-
----
+- **Duolingo** — confirmed on-site
 
 ## Role Evaluation Criteria
 
