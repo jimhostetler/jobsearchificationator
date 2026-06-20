@@ -43,6 +43,13 @@ next-env.d.ts
 
 /app/generated/prisma
 
-# prisma
-prisma/dev.db
-prisma/dev.db-journal
+# prisma — only track the schema, not the database or cowork temp files
+prisma/*.db
+prisma/*.db-journal
+prisma/*.db*mode=ro
+prisma/.fuse_hidden*
+prisma/search.log
+prisma/test_*.txt
+
+# cowork skill file — operational, not for public repo
+job-search-skill.md

@@ -2,10 +2,11 @@ import fs from "fs/promises";
 import path from "path";
 import { prisma } from "./db";
 
-const CLAUDE_MD_PATH = path.join(process.cwd(), "CLAUDE.md");
 const SKILL_PATH = path.join(process.cwd(), "job-search-skill.md");
+const INTERESTS_PATH = path.join(process.cwd(), "company-interests.md");
 
-// Syncs company data to both CLAUDE.md and job-search-skill.md.
+// Syncs company data to job-search-skill.md and company-interests.md.
+// CLAUDE.md is no longer auto-synced — it's a manually maintained personal dataset.
 // Called after any company create / update / delete.
 export async function syncCompanies(): Promise<void> {
   const companies = await prisma.company.findMany({
@@ -13,62 +14,12 @@ export async function syncCompanies(): Promise<void> {
   });
 
   await Promise.all([
-    syncClaudeMd(companies),
     syncSkillFile(companies),
+    syncInterestsFile(companies),
   ]);
 }
 
-// Keep the old name as an alias so the seed route doesn't need a separate import change.
-export const syncCompaniesToClaudeMd = syncCompanies;
 
-// ---------------------------------------------------------------------------
-// CLAUDE.md — rewrites "## Target Company Watchlist" section
-// ---------------------------------------------------------------------------
-async function syncClaudeMd(companies: Awaited<ReturnType<typeof prisma.company.findMany>>) {
-  const tier1 = companies.filter((c) => c.status === "pursue");
-  const tier2 = companies.filter((c) => c.status === "watch" || c.status === "network");
-  const excluded = companies.filter((c) => c.status === "exclude");
-
-  const tier1Rows = tier1
-    .map((c) => `| ${c.name} | ${c.why ?? ""} | ${c.notes ?? ""} |`)
-    .join("\n");
-
-  const tier2Rows = tier2
-    .map((c) => `| ${c.name} | ${c.why ?? ""} | ${c.notes ?? ""} |`)
-    .join("\n");
-
-  const excludedItems = excluded
-    .map((c) => `- **${c.name}**${c.notes ? ` — ${c.notes}` : ""}`)
-    .join("\n");
-
-  const newSection = `## Target Company Watchlist
-
-### Tier 1 — Active pursuit
-| Company | Why | Current Status |
-|---|---|---|
-${tier1Rows || "| _(none)_ | | |"}
-
-### Tier 2 — Monitor and outreach
-| Company | Why | Notes |
-|---|---|---|
-${tier2Rows || "| _(none)_ | | |"}
-
-### Off the list
-${excludedItems || "_(none)_"}`;
-
-  const content = await fs.readFile(CLAUDE_MD_PATH, "utf-8");
-  const updated = content.replace(
-    /## Target Company Watchlist[\s\S]*?(?=\n## )/,
-    newSection + "\n"
-  );
-
-  if (updated === content) {
-    console.warn("claudemd: could not locate Target Company Watchlist section in CLAUDE.md");
-    return;
-  }
-
-  await fs.writeFile(CLAUDE_MD_PATH, updated, "utf-8");
-}
 
 // ---------------------------------------------------------------------------
 // job-search-skill.md — rewrites "## FLAGGED COMPANIES" section
@@ -117,4 +68,51 @@ ${tier2.length > 0 ? tier2.map(formatItem).join("\n") : "_(none)_"}`;
   }
 
   await fs.writeFile(SKILL_PATH, updated, "utf-8");
+}
+
+// ---------------------------------------------------------------------------
+// company-interests.md — public read-only snapshot for GitHub
+// Fully rewritten on every sync; never edited manually.
+// ---------------------------------------------------------------------------
+async function syncInterestsFile(companies: Awaited<ReturnType<typeof prisma.company.findMany>>) {
+  const pursuing = companies.filter(
+    (c) => c.status === "pursue" || c.status === "network" || c.status === "applied"
+  );
+  const watching = companies.filter((c) => c.status === "watch");
+
+  const tableRows = (list: typeof companies) =>
+    list.map((c) => `| **${c.name}** | ${c.why ?? ""} |`).join("\n");
+
+  const updated = new Date().toLocaleDateString("en-US", {
+    month: "long", day: "numeric", year: "numeric",
+  });
+
+  const content = `# Companies I'm Excited About
+
+A living list of companies I'm actively researching or pursuing — organized by how engaged I currently am. Updated automatically from my job search tracker.
+
+*Last updated: ${updated}*
+
+---
+
+## Actively Pursuing
+
+These are companies where I've either applied, am in active outreach, or have identified a specific angle worth pursuing now.
+
+| Company | Why it matters to me |
+|---|---|
+${pursuing.length > 0 ? tableRows(pursuing) : "| _(none currently)_ | |"}
+
+---
+
+## Watching
+
+Companies I'm tracking and would move on quickly if the right role opened.
+
+| Company | Why it matters to me |
+|---|---|
+${watching.length > 0 ? tableRows(watching) : "| _(none currently)_ | |"}
+`;
+
+  await fs.writeFile(INTERESTS_PATH, content, "utf-8");
 }
