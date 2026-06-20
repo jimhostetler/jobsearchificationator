@@ -57,6 +57,7 @@ export async function PATCH(
         data: {
           title: candidate.title,
           company: candidate.company,
+          url: candidate.url,
           rawDescription:
             candidate.rawDescription ?? `[Discovered by daily search agent]`,
           salary: candidate.salary,

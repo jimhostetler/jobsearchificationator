@@ -45,6 +45,17 @@ export function JobCard({ job, onStatusChange }: JobCardProps) {
             {job.location && <span>{job.location}</span>}
             {job.salary && <span>{job.salary}</span>}
             <span>{formattedDate}</span>
+            {job.url && (
+              <a
+                href={job.url}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                View posting →
+              </a>
+            )}
           </div>
         </div>
 

@@ -34,6 +34,7 @@ model Job {
   id             String    @id @default(uuid())
   title          String
   company        String
+  url            String?
   rawDescription String
   salary         String?
   location       String?

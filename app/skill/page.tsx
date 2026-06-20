@@ -89,35 +89,11 @@ export default function SkillPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <AppHeader
-        title="Job Search Skill"
-        actions={
-          <div className="flex items-center gap-3">
-            {saveError && (
-              <span className="text-xs text-red-600">{saveError}</span>
-            )}
-            {updatedAt && !isDirty && (
-              <span className="text-xs text-gray-400">
-                Saved {new Date(updatedAt).toLocaleTimeString()}
-              </span>
-            )}
-            {isDirty && (
-              <span className="text-xs text-amber-600">Unsaved changes</span>
-            )}
-            <button
-              onClick={save}
-              disabled={!isDirty || saving}
-              className="px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 disabled:opacity-40 disabled:cursor-default"
-            >
-              {saving ? "Saving…" : "Save"}
-            </button>
-          </div>
-        }
-      />
+      <AppHeader title="Job Search Skill" />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-6 flex flex-col">
-        {/* Tabs */}
-        <div className="flex gap-1 mb-3">
+        {/* Tabs + save bar */}
+        <div className="flex items-center gap-1 mb-3">
           {(["edit", "preview"] as Tab[]).map((t) => (
             <button
               key={t}
@@ -131,9 +107,22 @@ export default function SkillPage() {
               {t === "edit" ? "Edit" : "Preview"}
             </button>
           ))}
-          <span className="ml-auto text-xs text-gray-400 self-center">
-            {lineCount} {lineCount === 1 ? "line" : "lines"} · Ctrl+S to save
-          </span>
+          <button
+            onClick={save}
+            disabled={!isDirty || saving}
+            className="px-4 py-1.5 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-default"
+          >
+            {saving ? "Saving…" : "Save"}
+          </button>
+          <div className="ml-auto flex items-center gap-3 text-xs text-gray-400">
+            {saveError && <span className="text-red-600">{saveError}</span>}
+            {isDirty
+              ? <span className="text-amber-600">Unsaved changes</span>
+              : updatedAt
+                ? <span>Saved {new Date(updatedAt).toLocaleTimeString()}</span>
+                : null}
+            <span>{lineCount} {lineCount === 1 ? "line" : "lines"}</span>
+          </div>
         </div>
 
         {loading ? (

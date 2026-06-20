@@ -1,26 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { AppHeader } from "@/components/AppHeader";
 
 export default function ProfilePage() {
   const [content, setContent] = useState("");
+  const [savedContent, setSavedContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const isDirty = content !== savedContent;
+
   useEffect(() => {
     fetch("/api/profile")
       .then((r) => r.json())
       .then((data) => {
-        if (data.content) setContent(data.content);
+        if (data.content) {
+          setContent(data.content);
+          setSavedContent(data.content);
+        }
       })
       .catch(() => setError("Failed to load profile"))
       .finally(() => setLoading(false));
   }, []);
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
+    if (saving) return;
     setSaving(true);
     setError(null);
     try {
@@ -30,6 +37,7 @@ export default function ProfilePage() {
         body: JSON.stringify({ content }),
       });
       if (response.ok) {
+        setSavedContent(content);
         setSavedAt(new Date().toLocaleTimeString());
       } else {
         const data = await response.json();
@@ -40,7 +48,18 @@ export default function ProfilePage() {
     } finally {
       setSaving(false);
     }
-  };
+  }, [content, saving]);
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+        e.preventDefault();
+        handleSave();
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [handleSave]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -62,6 +81,26 @@ export default function ProfilePage() {
             </div>
           ) : (
             <>
+              {/* Save bar */}
+              <div className="flex items-center gap-1 mb-3">
+                <button
+                  onClick={handleSave}
+                  disabled={saving || !isDirty}
+                  className="px-4 py-1.5 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-default"
+                >
+                  {saving ? "Saving…" : "Save"}
+                </button>
+                <div className="ml-auto flex items-center gap-3 text-xs text-gray-400">
+                  {error && <span className="text-red-600">{error}</span>}
+                  {isDirty
+                    ? <span className="text-amber-600">Unsaved changes</span>
+                    : savedAt
+                      ? <span>Saved {savedAt}</span>
+                      : null}
+                  <span>Ctrl+S to save</span>
+                </div>
+              </div>
+
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -69,23 +108,6 @@ export default function ProfilePage() {
                 placeholder="Paste your CLAUDE.md profile here..."
                 spellCheck={false}
               />
-
-              {error && (
-                <p className="mt-2 text-sm text-red-600">{error}</p>
-              )}
-
-              <div className="flex items-center justify-between mt-4">
-                <span className="text-sm text-gray-500">
-                  {savedAt ? `Saved at ${savedAt}` : "Unsaved changes will affect future scoring"}
-                </span>
-                <button
-                  onClick={handleSave}
-                  disabled={saving}
-                  className="px-6 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 disabled:opacity-50"
-                >
-                  {saving ? "Saving..." : "Save Profile"}
-                </button>
-              </div>
             </>
           )}
         </div>

@@ -11,6 +11,7 @@ export function JobForm({ onJobCreated }: JobFormProps) {
   const [description, setDescription] = useState("");
   const [titleInput, setTitleInput] = useState("");
   const [companyInput, setCompanyInput] = useState("");
+  const [urlInput, setUrlInput] = useState("");
   const [scoring, setScoring] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,7 +27,7 @@ export function JobForm({ onJobCreated }: JobFormProps) {
       const response = await fetch("/api/jobs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rawDescription: description }),
+        body: JSON.stringify({ rawDescription: description, url: urlInput.trim() || undefined }),
       });
 
       if (!response.ok) {
@@ -39,6 +40,7 @@ export function JobForm({ onJobCreated }: JobFormProps) {
       setDescription("");
       setTitleInput("");
       setCompanyInput("");
+      setUrlInput("");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -60,6 +62,7 @@ export function JobForm({ onJobCreated }: JobFormProps) {
           skipScoring: true,
           title: titleInput.trim() || undefined,
           company: companyInput.trim() || undefined,
+          url: urlInput.trim() || undefined,
         }),
       });
 
@@ -73,6 +76,7 @@ export function JobForm({ onJobCreated }: JobFormProps) {
       setDescription("");
       setTitleInput("");
       setCompanyInput("");
+      setUrlInput("");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -111,6 +115,20 @@ export function JobForm({ onJobCreated }: JobFormProps) {
             disabled={loading}
           />
         </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-900 mb-1">
+          Posting URL <span className="text-gray-500 font-normal">(optional)</span>
+        </label>
+        <input
+          type="url"
+          value={urlInput}
+          onChange={(e) => setUrlInput(e.target.value)}
+          placeholder="https://..."
+          className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2 text-gray-900"
+          disabled={loading}
+        />
       </div>
 
       <div>

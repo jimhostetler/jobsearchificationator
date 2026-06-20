@@ -374,17 +374,7 @@ export default function CompaniesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <AppHeader
-        title="Companies"
-        actions={
-          <button
-            onClick={() => setShowAdd(true)}
-            className="px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700"
-          >
-            + Add
-          </button>
-        }
-      />
+      <AppHeader title="Companies" />
 
       {showAdd && (
         <AddCompanyModal
@@ -407,7 +397,13 @@ export default function CompaniesPage() {
               <option key={s} value={s}>{STATUS_META[s].label}</option>
             ))}
           </select>
-          <span className="text-sm text-gray-400 ml-auto">{filtered.length} companies</span>
+          <span className="text-sm text-gray-400">{filtered.length} companies</span>
+          <button
+            onClick={() => setShowAdd(true)}
+            className="ml-auto px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
+          >
+            + Add Company
+          </button>
         </div>
 
         {loading ? (

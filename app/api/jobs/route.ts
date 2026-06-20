@@ -4,7 +4,7 @@ import { scoreJobDescription } from "@/lib/claude";
 
 export async function POST(request: NextRequest) {
   try {
-    const { rawDescription, skipScoring, title: manualTitle, company: manualCompany } = await request.json();
+    const { rawDescription, skipScoring, title: manualTitle, company: manualCompany, url } = await request.json();
 
     if (!rawDescription || typeof rawDescription !== "string") {
       return NextResponse.json(
@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
         data: {
           title: manualTitle?.trim() || "Untitled Job",
           company: manualCompany?.trim() || "Unknown",
+          url: url?.trim() || null,
           rawDescription,
           matchScore: null,
           matchReasons: null,
@@ -39,6 +40,7 @@ export async function POST(request: NextRequest) {
       data: {
         title: scoreResult.title,
         company: scoreResult.company,
+        url: url?.trim() || null,
         rawDescription,
         salary: scoreResult.salary,
         location: scoreResult.location,

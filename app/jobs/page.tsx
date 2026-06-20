@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Job } from "@/lib/types";
 import { JobCard } from "@/components/JobCard";
 import { AppHeader } from "@/components/AppHeader";
@@ -150,6 +151,12 @@ export default function JobsPage() {
                 ))}
               </select>
             </div>
+            <Link
+              href="/"
+              className="ml-auto px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
+            >
+              + Add Job
+            </Link>
           </div>
         </div>
 

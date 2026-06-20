@@ -265,6 +265,21 @@ export default function JobDetailPage() {
               </div>
             </div>
 
+            {/* Posting link */}
+            {job.url && (
+              <div>
+                <span className="text-sm text-gray-600">Posting: </span>
+                <a
+                  href={job.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm text-blue-600 hover:text-blue-800 break-all"
+                >
+                  {job.url}
+                </a>
+              </div>
+            )}
+
             {/* Mission alignment */}
             {job.missionAlignment && (
               <div>
